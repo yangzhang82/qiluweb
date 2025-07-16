@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>齐鲁国际学校AI官网 功能结构与层级说明</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: 'Microsoft YaHei', Arial, sans-serif; background: #f5f5f5; color: #222; margin: 0; }
+        .container { max-width: 1200px; margin: 40px auto; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px #0001; padding: 40px; }
+        h1, h2, h3 { color: #2c5aa0; }
+        h1 { text-align: center; margin-bottom: 2rem; }
+        h2 { margin-top: 2.5rem; border-left: 6px solid #667eea; padding-left: 12px; }
+        h3 { margin-top: 1.5rem; }
+        .category { margin-top: 2.5rem; }
+        .category-title { font-size: 1.3rem; color: #ff6b35; margin-bottom: 1rem; cursor: pointer; user-select: none; transition: color 0.2s; }
+        .category-title:hover { color: #e55a2b; }
+        .module { margin-bottom: 2.5rem; }
+        .feature-list { margin: 0 0 1.5rem 0; padding: 0; list-style: none; }
+        .feature-list li { margin-bottom: 1.2rem; background: #f8f9fa; border-left: 4px solid #764ba2; padding: 12px 18px; border-radius: 6px; }
+        .feature-title { font-weight: bold; color: #764ba2; }
+        .mermaid { background: #f8f9fa; border-radius: 8px; margin: 2rem 0; padding: 1rem; }
+        .collapsed { display: none; }
+        .expand-icon { font-size: 1.1em; margin-right: 8px; color: #ff6b35; transition: transform 0.2s; }
+        .expanded > .expand-icon { transform: rotate(90deg); }
+        @media (max-width: 700px) {
+            .container { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>AI官网<br>功能结构与层级详细说明</h1>
+    <p style="font-size:1.15em; color:#333; margin: 1.5em 0 1em 0; line-height:1.9; text-align:left;">
+        随着教育信息化的深入发展，学校官网已成为展示学校形象、服务师生家长、提升管理效率的重要平台。齐鲁国际学校现有官网在功能完整性、用户体验、智能化程度等方面已无法满足当前发展需求，亟需进行全面升级改造。<br>
+        <b>升级目标：</b>打造集信息展示、智能服务、招生管理、数据分析于一体的现代化AI智能官网系统，提升学校品牌形象，优化用户体验，提高管理效率。<br>
+        <b>方案选择</b><br>
+        为了便于阅读此文档，说明如下：总体方案选型为两种：<br>第一种采用自建+aws的方式，优点为可拓展性强，适应性强，具有较高安全性，可灵活定制复杂需求及流程；缺点为价格高，工期长，需要aws的周期性费用以及后续的维护费用。
+        <br>第二种为wordpress建站方式，优点为工期短，建站费用及后续维护费用低，目前此类建站方式为较流行的方式，比较有代表性的为很多跨境电商网站都采用此类方式；缺点为可扩展性低，安全性不如自建站+aws，受平台约束较多，后期如需复杂业务逻辑，可能无法实现。
+        </p>
+    
+
+    <!-- 流程图部分 -->
+    <h2>方案一&二主要业务流程图</h2>
+
+<div>
+  <h3>1. 招生咨询与报名流程</h3>
+  <div class="mermaid">
+  flowchart LR
+      A[用户访问官网] --> B[浏览招生简章/流程]
+      B --> C[在线咨询/报名表单]
+      C --> D[AI问答机器人自动答疑]
+      C --> E[用户提交报名信息]
+      E --> F[后台审核/处理]
+      F --> G[短信/邮件通知用户]
+  </div>
+</div>
+
+<div>
+  <h3>2. AI内容管理与推荐流程</h3>
+  <div class="mermaid">
+  flowchart LR
+      A1[内容编辑/上传] --> B1[AI自动分类]
+      B1 --> C1[AI标签生成]
+      C1 --> D1[AI摘要生成]
+      D1 --> E1[内容发布]
+      E1 --> F1[用户浏览]
+      F1 --> G1[AI内容推荐]
+  </div>
+</div>
+
+<div>
+  <h3>3. 在线授课与资源管理流程</h3>
+  <div class="mermaid">
+  flowchart LR
+      A2[管理员发布课程表] --> B2[教师上传课件/视频]
+      B2 --> C2[学生端查看课程表]
+      C2 --> D2[进入实时授课/观看回放]
+      D2 --> E2[在线考试/测评]
+      E2 --> F2[成绩自动统计与查询]
+  </div>
+</div>
+
+<div>
+  <h3>4. AI招聘流程</h3>
+  <div class="mermaid">
+  flowchart LR
+      A3[应聘者上传简历] --> B3[AI自动解析简历]
+      B3 --> C3[AI智能筛选/匹配岗位]
+      C3 --> D3[推荐给用人部门]
+      D3 --> E3[人工复核/面试安排]
+  </div>
+</div>
+
+    <!-- 功能结构部分 -->
+    <div class="category expanded">
+        <h2>方案一&二主要功能点说明</h2>
+        <div class="category-title"><span class="expand-icon">&#9654;</span>一、基础功能模块</div>
+        <div class="module">
+            <ul class="feature-list">
+                <li><span class="feature-title">首页内容展示：</span>集中展示学校简介、轮播图、新闻、招生信息、重点活动等内容，支持后台灵活配置展示内容和顺序。</li>
+                <li><span class="feature-title">中/英文切换：</span>支持多种语言自动选择，可根据用户浏览器使用的语言展示网站内容。</li>
+                <li><span class="feature-title">新闻公告管理：</span>后台可对新闻、公告进行图文编辑、定时发布、置顶、归档等操作，支持分类管理和多媒体内容嵌入。</li>
+                <li><span class="feature-title">栏目管理：</span>灵活配置网站各大栏目（如师资、学生风采、校内活动等），支持多级栏目嵌套和内容分类展示。</li>
+                <li><span class="feature-title">媒体管理：</span>集中管理图片、视频等多媒体资源，支持按类别、标签分层展示，后台可批量上传、编辑、删除。</li>
+                <li><span class="feature-title">招生简章/流程：</span>展示招生简章、计划、时间表、入学流程等，支持图文、表格、时间轴等多种形式。</li>
+                <li><span class="feature-title">咨询/报名/反馈表单：</span>提供在线咨询、报名、意见反馈等表单，支持自定义字段，后台可实时查看、导出数据。</li>
+                <li><span class="feature-title">数据风采展示：</span>以图表、数据面板等形式展示学校办学成果、师资力量、升学率等关键数据。</li>
+                <li><span class="feature-title">校内与家校互动：</span>提供电话、邮箱、在线咨询入口，支持家校沟通、校内师生互动。</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="category expanded">
+        <div class="category-title"><span class="expand-icon">&#9654;</span>二、AI智能功能模块</div>
+        <div class="module">
+            <ul class="feature-list">
+                <li><span class="feature-title">自动内容分类：</span>利用NLP技术自动识别文章主题，将内容归类到最合适的栏目，无需人工干预。</li>
+                <li><span class="feature-title">标签自动生成：</span>从文章文本中自动提取关键词，生成内容标签，便于检索和推荐。</li>
+                <li><span class="feature-title">摘要生成：</span>AI自动生成文章摘要，便于首页、列表页快速预览内容。</li>
+                <li><span class="feature-title">智能内容联想：</span>根据关键词、用户行为等，智能推荐相关内容、联想词、模糊搜索结果。</li>
+                <li><span class="feature-title">AI问答机器人：</span>7x24小时自动答疑，涵盖常见问题、招生政策、课程介绍等，支持多轮对话和上下文理解。</li>
+                <li><span class="feature-title">内容智能推荐：</span>根据用户浏览、点击、搜索等行为，智能推荐相关新闻、活动、栏目等内容。</li>
+                <li><span class="feature-title">用户行为分析：</span>统计用户访问路径、停留时长、表单提交等行为，生成数据报表。</li>
+                <li><span class="feature-title">用户分群与描述生成：</span>AI自动分析用户特征，生成用户画像和分群描述，辅助精准营销和内容推送。</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="category expanded">
+        <div class="category-title"><span class="expand-icon">&#9654;</span>三、后台管理模块</div>
+        <div class="module">
+            <ul class="feature-list">
+                <li><span class="feature-title">用户/权限管理：</span>支持多级权限分配（如内容编辑、审核、发布、超级管理员等），可灵活配置角色和权限。</li>
+                <li><span class="feature-title">网站配置管理：</span>支持网站Logo、主题色、菜单结构、首页布局等全局配置，所见即所得。</li>
+                <li><span class="feature-title">数据统计与分析：</span>统计网站访问量、用户行为、关键词热度、表单提交等，支持多维度数据导出。</li>
+                <li><span class="feature-title">在线数据汇总：</span>对所有在线表单、报名、咨询等数据进行汇总、导出，支持通知和批量处理。</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="category expanded">
+        <div class="category-title"><span class="expand-icon">&#9654;</span>四、可选扩展模块</div>
+        <div class="module">
+            <ul class="feature-list">
+                <li><span class="feature-title">微信/短信集成：</span>与微信、短信平台对接，实现消息推送、活动报名、通知提醒等功能。</li>
+                <li><span class="feature-title">数字系统对接：</span>与校内教务、OA等系统打通，实现数据同步和业务协同。</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="category expanded">
+        <div class="category-title"><span class="expand-icon">&#9654;</span>五、在线授课模块</div>
+        <div class="module">
+            <ul class="feature-list">
+                <li><span class="feature-title">实时授课嵌入：</span>支持嵌入第三方视频教学平台，实现直播、录播课程在线学习。</li>
+                <li><span class="feature-title">教务排课管理：</span>后台可配置课程表，教师端/学生端可实时查看，支持课表导出和提醒。</li>
+                <li><span class="feature-title">教学资源管理：</span>集中管理课件、PDF、视频等教学资源，支持分类、检索、权限控制。</li>
+                <li><span class="feature-title">线上考试/测评：</span>支持题库管理、自动组卷、在线答题、自动阅卷、成绩统计等。</li>
+                <li><span class="feature-title">成绩查询：</span>学生和家长可在线查询成绩单，支持成绩分析和导出。</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="category expanded">
+        <div class="category-title"><span class="expand-icon">&#9654;</span>六、AI招聘管理模块</div>
+        <div class="module">
+            <ul class="feature-list">
+                <li><span class="feature-title">简历上传与解析：</span>支持PDF/DOC简历上传，AI自动提取姓名、学历、经验等关键信息。</li>
+                <li><span class="feature-title">智能筛选/匹配师资：</span>AI根据岗位要求自动筛选、排序简历，推荐最匹配候选人。</li>
+                <li><span class="feature-title">应聘者匹配度分析：</span>AI自动判断应聘者与岗位的匹配度（如学历、经验、技能等），并可辅助人工复核。</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--- AWS 网站结构拓扑图，Mermaid 10.9.0 -->
+<head>
+    <meta charset="UTF-8">
+    <title>Mermaid 流程图演示</title>
+    <!-- 引入 Mermaid 脚本 -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <style>
+        body { background: #f5f5f5; }
+        .mermaid { background: #fff; border-radius: 8px; margin: 2rem auto; padding: 1rem; max-width: 1200px; }
+    </style>
+</head>
+<body>
+    
+        <h2>方案一详细开发工时与说明</h2>
+        <table border="1" cellpadding="6" style="border-collapse:collapse; margin-bottom:2em; background:#fff; width:100%;">
+          <tr>
+            <th>功能分类</th>
+            <th>功能名称</th>
+            <th>预计耗时（小时）</th>
+            <th>说明</th>
+          </tr>
+          <tr><td>基础功能模块</td><td>首页内容展示</td><td>10 - 15</td><td>需要设计页面布局，编写 HTML/CSS 样式和 JavaScript 实现轮播等动态效果，还要与后台数据交互展示新闻等内容。</td></tr>
+          <tr><td>基础功能模块</td><td>中 / 英文切换（可扩展）</td><td>8 - 12</td><td>要处理语言文件的加载、存储用户语言偏好，以及在页面切换语言时更新所有文本内容。</td></tr>
+          <tr><td>基础功能模块</td><td>新闻公告管理</td><td>15 - 20</td><td>涉及数据库设计，后台管理界面开发（支持图文编辑、定时发布和置顶等功能），前端展示页面开发。</td></tr>
+          <tr><td>基础功能模块</td><td>栏目管理</td><td>8 - 12</td><td>包括后台栏目管理和前端栏目导航展示。</td></tr>
+          <tr><td>基础功能模块</td><td>多媒体管理</td><td>12 - 16</td><td>处理图片、视频的上传、存储、分类和前端样式展示。</td></tr>
+          <tr><td>基础功能模块</td><td>招生简章/流程</td><td>10 - 15</td><td>前端页面设计和功能和后台管理界面。</td></tr>
+          <tr><td>基础功能模块</td><td>咨询 / 报名 / 反馈表单</td><td>12 - 16</td><td>表单设计和验证，后台数据接收、存储和导出功能。</td></tr>
+          <tr><td>基础功能模块</td><td>教师风采展示</td><td>10 - 15</td><td>设计展示页面和数据展示。</td></tr>
+          <tr><td>基础功能模块</td><td>地图与联系方式</td><td>8 - 12</td><td>集成地图 API，展示联系信息和入口。</td></tr>
+          <tr><td>AI智能功能模块</td><td>自动内容分类</td><td>20 - 30</td><td>需要使用 NLP 相关技术和算法。开发分类模型并与网站集成。</td></tr>
+          <tr><td>AI智能功能模块</td><td>标签自动生成</td><td>15 - 20</td><td>涉及文本分析和关键词提取算法开发和集成。</td></tr>
+          <tr><td>AI智能功能模块</td><td>自动摘要生成</td><td>25 - 30</td><td>实现摘要提取算法并与后台集成。</td></tr>
+          <tr><td>AI智能功能模块</td><td>高级站内搜索</td><td>20 - 30</td><td>实现拼写纠错、关键词联想等搜索增强功能。</td></tr>
+          <tr><td>AI智能功能模块</td><td>问答机器人</td><td>30 - 40</td><td>集成或自研 AI 问答模块，支持常见问题自动答复。</td></tr>
+          <tr><td>AI智能功能模块</td><td>内容智能推荐</td><td>25 - 30</td><td>需分析用户行为数据，建立推荐算法并在前端推荐内容。</td></tr>
+          <tr><td>AI智能功能模块</td><td>图片分类与描述生成</td><td>20 - 40</td><td>使用图像识别技术和模型实现现有图片分类和描述生成。</td></tr>
+          <tr><td>AI智能功能模块</td><td>用户行为分析</td><td>15 - 20</td><td>开发行为分析和统计模块，分析关键行为。</td></tr>
+          <tr><td>后台管理模块</td><td>用户 / 权限管理</td><td>15 - 20</td><td>设计多级权限系统，包括用户注册、登录和权限控制。</td></tr>
+          <tr><td>后台管理模块</td><td>网站配置管理</td><td>8 - 12</td><td>开发网站配置界面，支持 Logo、颜色主题等配置。</td></tr>
+          <tr><td>后台管理模块</td><td>内容与访问分析</td><td>18 - 25</td><td>数据统计和分析模块，生成报表和关键数据。</td></tr>
+          <tr><td>后台管理模块</td><td>在线数据汇总</td><td>10 - 15</td><td>表单数据导出和汇总，后台通知和导出。</td></tr>
+          <tr><td>可选扩展模块</td><td>微信 / 短信集成</td><td>15 - 20</td><td>集成第三方短信和微信 API，实现通知和报名。</td></tr>
+          <tr><td>可选扩展模块</td><td>教务系统对接</td><td>20 - 30</td><td>对接教务系统数据接口，开发数据对接功能。</td></tr>
+          <tr><td>在线授课模块</td><td>实时授课嵌入页面</td><td>15 - 20</td><td>集成第三方视频教学平台，处理视频和页面展示。</td></tr>
+          <tr><td>在线授课模块</td><td>教学排课管理</td><td>18 - 30</td><td>开发后台课程排课和前端展示、收集、权限和开发。</td></tr>
+          <tr><td>在线授课模块</td><td>视频回放与资料挂载</td><td>20 - 30</td><td>处理视频回放和资料挂载功能。</td></tr>
+          <tr><td>AI招聘管理模块</td><td>简历上传与解析</td><td>20 - 30</td><td>开发简历上传和解析功能。</td></tr>
+          <tr><td>AI招聘管理模块</td><td>智能关键词匹配筛选</td><td>20 - 30</td><td>开发关键词匹配算法实现筛选功能。</td></tr>
+          <tr><td>AI招聘管理模块</td><td>AI自动打分与排序</td><td>25 - 35</td><td>建立 AI 评分或排序相关插件。</td></tr>
+          <tr><td>AI招聘管理模块</td><td>应聘者匹配度分析</td><td>25 - 30</td><td>设计匹配度算法并集成展示功能。</td></tr>
+          <tr>
+            <td colspan="4" style="text-align:right;font-weight:bold;">
+              总工时约 650 - 900 小时（按最小工作量计算，约4个月）
+            </td>
+          </tr>
+        </table>
+        
+        <h2>方案二wordPress开发工时与说明</h2>
+        <table border="1" cellpadding="6" style="border-collapse:collapse; background:#fff; width:100%;">
+          <tr>
+            <th>功能分类</th>
+            <th>功能名称</th>
+            <th>WordPress预计耗时（小时）</th>
+            <th>说明</th>
+          </tr>
+          <tr><td>基础功能模块</td><td>首页内容展示</td><td>4.5 - 7.5</td><td>使用页面构建器（如 Elementor）快速设计布局，添加和应内容模块。</td></tr>
+          <tr><td>基础功能模块</td><td>中 / 英文切换（可扩展）</td><td>3 - 6</td><td>安装多语言插件（如 WPML、Polylang）并配置。</td></tr>
+          <tr><td>基础功能模块</td><td>新闻公告管理</td><td>6 - 10.5</td><td>使用文章功能，配合插件实现定时发布、置顶等。</td></tr>
+          <tr><td>基础功能模块</td><td>栏目管理</td><td>3 - 6</td><td>通过菜单管理和分类目录设置。</td></tr>
+          <tr><td>基础功能模块</td><td>多媒体管理</td><td>4.5 - 9</td><td>利用媒体库和相关插件实现分类和样式设置。</td></tr>
+          <tr><td>基础功能模块</td><td>招生简章</td><td>4.5 - 7.5</td><td>创建页面，使用页面构建器展示信息。</td></tr>
+          <tr><td>基础功能模块</td><td>咨询 / 报名 / 反馈表单</td><td>4.5 - 9</td><td>安装表单插件（如 Contact Form 7）并配置。</td></tr>
+          <tr><td>基础功能模块</td><td>教师风采</td><td>3 - 6</td><td>创建页面展示相关内容。</td></tr>
+          <tr><td>基础功能模块</td><td>地图与联系方式</td><td>3 - 6</td><td>使用地图插件和添加联系方式内容。</td></tr>
+          <tr><td>AI智能功能模块</td><td>自动内容分类</td><td>12 - 18</td><td>可能需要相关插件对接结合第三方 API 开发自定义功能。</td></tr>
+          <tr><td>AI智能功能模块</td><td>标签自动生成</td><td>12 - 18</td><td>有一些 SEO 插件可辅助实现部分功能，可能还需调整。</td></tr>
+          <tr><td>AI智能功能模块</td><td>自动摘要生成</td><td>12 - 18</td><td>相关插件或开发自定义代码。</td></tr>
+          <tr><td>AI智能功能模块</td><td>高级站内搜索</td><td>9 - 15</td><td>安装高级搜索插件并配置。</td></tr>
+          <tr><td>AI智能功能模块</td><td>问答机器人</td><td>12 - 18</td><td>集成第三方聊天机器人服务插件。</td></tr>
+          <tr><td>AI智能功能模块</td><td>内容智能推荐</td><td>12 - 18</td><td>找推荐插件或开发自定义功能。</td></tr>
+          <tr><td>AI智能功能模块</td><td>图片分类与描述生成</td><td>15 - 22.5</td><td>可能需要结合第三方图像识别 API 开发自定义插件。</td></tr>
+          <tr><td>AI智能功能模块</td><td>用户行为分析</td><td>9 - 15</td><td>安装统计分析插件并配置。</td></tr>
+          <tr><td>后台管理模块</td><td>用户 / 权限管理</td><td>6 - 10.5</td><td>使用 WordPress 自带权限功能或安装权限管理插件。</td></tr>
+          <tr><td>后台管理模块</td><td>网站配置管理</td><td>4.5 - 9</td><td>通过主题定制和插件配置实现。</td></tr>
+          <tr><td>后台管理模块</td><td>内容与访问分析</td><td>4.5 - 9</td><td>相关类数据分析插件。</td></tr>
+          <tr><td>后台管理模块</td><td>在线数据汇总</td><td>6 - 10.5</td><td>利用表单插件的数据管理功能和通知插件。</td></tr>
+          <tr><td>可选扩展模块</td><td>微信 / 短信集成</td><td>12 - 18</td><td>找相关集成插件或开发自定义代码。</td></tr>
+          <tr><td>可选扩展模块</td><td>移动端小程序</td><td>22.5 - 30</td><td>找 WordPress 小程序生成插件或开发自定义小程序。</td></tr>
+          <tr><td>在线授课模块</td><td>实时授课嵌入页面</td><td>10.5 - 15</td><td>找相关第三方教学平台的插件或添加代码。</td></tr>
+          <tr><td>在线授课模块</td><td>教学排课管理</td><td>9 - 15</td><td>安装排课管理插件并配置。</td></tr>
+          <tr><td>在线授课模块</td><td>视频回放与资料挂载</td><td>9 - 15</td><td>利用媒体库和相关插件实现。</td></tr>
+          <tr><td>AI招聘管理模块</td><td>简历上传与解析</td><td>15 - 22.5</td><td>开发自定义代码或找相关插件。</td></tr>
+          <tr><td>AI招聘管理模块</td><td>智能关键词匹配筛选</td><td>12 - 18</td><td>开发自定义代码或找相关插件。</td></tr>
+          <tr><td>AI招聘管理模块</td><td>AI自动打分与排序</td><td>15 - 22.5</td><td>开发自定义功能实现。</td></tr>
+          <tr>
+            <td colspan="4" style="text-align:right;font-weight:bold;">
+              总工时约270-420小时（按最小工时计算约1个半月）
+            </td>
+          </tr>
+        </table>
+        <h2 style="text-align:center;">方案一网站结构拓扑图（以aws为例）</h2>
+        <div class="mermaid">
+            flowchart LR
+                user([User])
+                waf([AWS WAF])
+                cdn([CloudFront CDN])
+                alb([ALB])
+                fe([Frontend App])
+                admin([Admin System])
+                api([API/AI Service])
+                db[(Database<br>RDS/DocumentDB/ElastiCache)]
+                s3([S3 Static/Backup])
+                backup([AWS Backup])
+                cognito([Cognito Auth])
+                iam([IAM])
+                cloudwatch([CloudWatch])
+                guardduty([GuardDuty])
+            
+                %% 主业务流
+                user --> waf --> cdn --> alb
+                alb --> fe
+                alb --> admin
+                fe --> api
+                admin --> api
+                fe --> s3
+                api --> db
+                db --> backup
+                s3 --> backup
+            
+                %% 安全与监控
+                fe --> cognito
+                admin --> iam
+                api --> iam
+                fe --> cloudwatch
+                api --> cloudwatch
+                admin --> cloudwatch
+                cloudwatch --> guardduty
+            </div>
+<script>
+    // Mermaid 初始化
+    mermaid.initialize({ startOnLoad: true });
+
+    // 折叠/展开交互
+    document.querySelectorAll('.category-title').forEach(function(title) {
+        title.addEventListener('click', function() {
+            const parent = title.parentElement;
+            const module = parent.querySelector('.module');
+            const icon = title.querySelector('.expand-icon');
+            if (module.classList.contains('collapsed')) {
+                module.classList.remove('collapsed');
+                parent.classList.add('expanded');
+            } else {
+                module.classList.add('collapsed');
+                parent.classList.remove('expanded');
+            }
+        });
+    });
+</script>
+</body>
+</html> 

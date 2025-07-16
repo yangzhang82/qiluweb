@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Mermaid 流程图演示</title>
+    <!-- 引入 Mermaid 脚本 -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <style>
+        body { background: #f5f5f5; }
+        .mermaid { background: #fff; border-radius: 8px; margin: 2rem auto; padding: 1rem; max-width: 1200px; }
+    </style>
+</head>
+<body>
+    <h2 style="text-align:center;">AWS 网站结构拓扑图</h2>
+    <div class="mermaid">
+flowchart TB
+    user([User])
+    waf([AWS WAF])
+    cdn([CloudFront CDN])
+    alb([ALB])
+    fe([Frontend App])
+    admin([Admin System])
+    api([API/AI Service])
+    rds([RDS/Aurora])
+    mongo([DocumentDB])
+    redis([ElastiCache])
+    sg([Security Group])
+    s3([S3])
+    ses([SES/SNS])
+    cognito([Cognito])
+    iam([IAM])
+    cloudwatch([CloudWatch])
+    guardduty([GuardDuty])
+    inspector([Inspector])
+    backup([AWS Backup])
+
+    user --> waf
+    waf --> cdn
+    cdn --> alb
+    alb --> fe
+    alb --> admin
+    fe --> api
+    admin --> api
+    fe --> s3
+    api --> rds
+    api --> mongo
+    api --> redis
+    api --> ses
+    api --> cognito
+    api --> iam
+    fe --> cognito
+    admin --> iam
+    fe --> cloudwatch
+    api --> cloudwatch
+    admin --> cloudwatch
+    fe --> guardduty
+    api --> guardduty
+    admin --> guardduty
+    fe --> inspector
+    api --> inspector
+    admin --> inspector
+    rds --> backup
+    mongo --> backup
+    s3 --> backup
+    </div>
+</body>
+</html>
